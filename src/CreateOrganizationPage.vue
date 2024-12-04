@@ -1,20 +1,20 @@
 <template>
   <div class="app">
     <div class="header">
-      <h2>Лабораторная работа №4</h2>
+      <h2>Добавить организацию</h2>
     </div>
     <div class="main">
-      <login-form class="form appElement" />
+      <organization-form class="form appElement" />
     </div>
   </div>
 </template>
 
 <script>
-import LoginForm from "@/components/LoginForm.vue";
+import OrganizationForm from "@/components/organization/OrganizationForm.vue";
 
 export default {
   components: {
-    LoginForm,
+    OrganizationForm,
   },
   name: "App",
   data() {
@@ -38,7 +38,7 @@ export default {
   color: black;
 }
 .app {
-  font-size: 20px;
+  font-size: 15px;
   width: 100%;
   padding: 10px;
   display: flex;
@@ -52,11 +52,11 @@ export default {
 }
 
 .form {
-  width: 40%;
-  height: 300px;
+  width: 60%;
+  height: 60%;
   margin: 10px;
   padding: 20px;
-  border: 1.5px solid black;
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
 }
@@ -64,7 +64,7 @@ export default {
 .header {
   width: 100%;
   text-align: center;
-  font-size: 45px;
+  font-size: 30px;
   margin: 50px 0px 50px 0px;
 }
 </style>

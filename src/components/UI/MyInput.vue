@@ -24,8 +24,8 @@ export default {
 .input {
   width: 100%;
   background-color: #836c7b;
-  padding: 7px;
-  border: 1.5px solid black;
+  padding: 5px;
+  border: 1px solid black;
   font-size: var(--element-form-text-size);
 }
 </style>

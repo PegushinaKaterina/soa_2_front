@@ -16,7 +16,7 @@ export default {
   name: "my-select",
   props: {
     modelValue: {
-      type: Number,
+      type: String,
     },
     options: {
       type: Array,
@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     changeOption(event) {
-      this.$emit("update:modelValue", Number(event.target.value));
+      this.$emit("update:modelValue", event.target.value);
     },
   },
 };
@@ -36,8 +36,8 @@ export default {
   width: 100%;
   color: black;
   background-color: #836c7b;
-  padding: 7px;
-  border: 1.5px solid black;
+  padding: 5px;
+  border: 1px solid black;
   font-size: var(--element-form-text-size);
 }
 </style>

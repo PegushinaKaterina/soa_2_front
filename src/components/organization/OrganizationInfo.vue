@@ -1,0 +1,189 @@
+<template>
+  <div class="dotTable">
+    <div class="dotTableRow">
+      <div class="dotRowElem">
+        {{ headerOrganization.name }}
+      </div>
+      <div class="dotRowElem">
+        {{ headerOrganization.coordinates }}
+      </div>
+      <div class="dotRowElem">
+        {{ headerOrganization.creationDate }}
+      </div>
+      <div class="dotRowElem">
+        {{ headerOrganization.type }}
+      </div>
+      <div class="dotRowElem">
+        {{ headerOrganization.annualTurnover }}
+      </div>
+      <div class="dotRowElem">
+        {{ headerOrganization.officialAddress }}
+      </div>
+      <div class="dotRowElem">{{ headerOrganization.employees }}</div>
+    </div>
+    <div class="dotTableRow">
+      <div class="dotRowElem">{{ organization.name }}</div>
+      <div class="dotRowElem">
+        x: {{ organization.coordinates.x }}, y: {{ organization.coordinates.x }}
+      </div>
+      <div class="dotRowElem">
+        {{ new Date(organization.creationDate).toLocaleDateString() }}
+      </div>
+      <div class="dotRowElem">
+        {{ typeMap[organization.type] }}
+      </div>
+      <div class="dotRowElem">
+        {{ organization.annualTurnover }}
+      </div>
+      <div class="dotRowElem">
+        {{ organization.officialAddress.zipCode }}
+      </div>
+      <div class="dotRowElem">
+        {{ organization.employees }}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <my-button class="closeButton" type="button" @click="deleteAllEmployees"
+      >удалить всех сотрудников
+    </my-button>
+    <div>
+      <fieldset class="my-input">
+        <legend>name</legend>
+        <my-input v-model="name" type="text" />
+      </fieldset>
+      <my-button class="closeButton" type="button" @click="addEmployee"
+        >Добавить сотрудника
+      </my-button>
+    </div>
+  </div>
+</template>
+
+<script>
+import MyButton from "@/components/UI/MyButton.vue";
+import axios from "axios";
+import MyInput from "@/components/UI/MyInput.vue";
+
+export default {
+  name: "organization-info",
+  components: { MyInput, MyButton },
+  props: {
+    organizationProp: {
+      type: Object,
+      required: true,
+    },
+  },
+  watch: {
+    organizationProp: {
+      handler(newOrganization) {
+        this.organization = JSON.parse(JSON.stringify(newOrganization));
+      },
+    },
+  },
+  data() {
+    return {
+      organization: JSON.parse(JSON.stringify(this.organizationProp)),
+      name: "",
+      headerOrganization: {
+        id: "id",
+        name: "name",
+        coordinates: "coordinates",
+        creationDate: "creationDate",
+        type: "type",
+        officialAddress: "officialAddress",
+        annualTurnover: "annualTurnover",
+        employees: "employees",
+      },
+    };
+  },
+  computed: {
+    typeMap() {
+      return {
+        PUBLIC: "паблик",
+        GOVERNMENT: "государственный",
+        TRUST: "доверительный",
+        PRIVATE_LIMITED_COMPANY: "ООО",
+        OPEN_JOINT_STOCK_COMPANY: "ОАО",
+      };
+    },
+  },
+  methods: {
+    deleteAllEmployees() {
+      axios
+        .post(
+          "https://localhost:8585/orgmanager/fire/all/" + this.organization.id
+        )
+        .then(() => {
+          axios
+            .get(
+              "https://localhost:8181/organization-service/organizations/" +
+                this.organization.id
+            )
+            .then((res) => {
+              this.organization = res.data;
+            })
+            .catch((error) => console.log(error));
+        })
+        .catch((error) => console.log(error));
+    },
+    addEmployee() {
+      axios
+        .post(
+          "https://localhost:8585/orgmanager/hire/" + this.organization.id,
+          {
+            name: this.name,
+          }
+        )
+        .then(() => {
+          axios
+            .get(
+              "https://localhost:8181/organization-service/organizations/" +
+                this.organization.id
+            )
+            .then((res) => {
+              this.organization = res.data;
+            })
+            .catch((error) => console.log(error));
+        })
+        .catch((error) => console.log(error));
+    },
+  },
+};
+</script>
+
+<style scoped>
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.dotTableRow {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  color: white;
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.dotTable {
+  height: 480px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  overflow-y: scroll;
+}
+.dotRowElem {
+  display: flex;
+  flex-direction: row;
+  padding: 2px;
+}
+.my-input {
+  padding: 5px;
+}
+</style>

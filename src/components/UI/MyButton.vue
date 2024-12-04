@@ -12,11 +12,12 @@ export default {
 
 <style scoped>
 .button {
+  margin-top: 5px;
+  margin-bottom: 5px;
   width: var(--button-size);
-  margin-top: 20px;
-  padding: 7px;
+  padding: 5px;
   background-color: #d59e6a;
-  border: 1.5px solid black;
+  border: 1px solid black;
   font-size: var(--element-form-text-size);
 }
 </style>
