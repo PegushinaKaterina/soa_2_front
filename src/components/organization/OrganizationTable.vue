@@ -6,21 +6,22 @@
         class="dotTableHeader"
       />
       <organization-table-row
-        class="tableRow"
         v-for="organization in organizations"
         :key="organization.id"
         :organization="organization"
+        class="tableRow"
         @moreInfo="$emit('moreInfo', $event)"
         @updateOrganization="$emit('updateOrganization', $event)"
+        @reload="$emit('reload', $event)"
       />
     </div>
     <div class="right">
-      <my-button type="button" @click="$emit('prevPage')" class="my-button"
-      >предыдущая страница</my-button
-      >
-      <my-button type="button" @click="$emit('nextPage')" class="my-button"
-        >следующая страница</my-button
-      >
+      <my-button class="my-button" type="button" @click="$emit('prevPage')"
+        >предыдущая страница
+      </my-button>
+      <my-button class="my-button" type="button" @click="$emit('nextPage')"
+        >следующая страница
+      </my-button>
     </div>
   </div>
 </template>
@@ -29,9 +30,11 @@
 import OrganizationTableRow from "@/components/organization/OrganizationTableRow.vue";
 import OrganizationTableHeader from "@/components/organization/OrganizationTableHeader.vue";
 import MyButton from "@/components/UI/MyButton.vue";
+import SortingTableRow from "@/components/sort/SortingTableRow.vue";
 
 export default {
   components: {
+    SortingTableRow,
     MyButton,
     OrganizationTableHeader,
     OrganizationTableRow,
@@ -87,17 +90,21 @@ export default {
   background-color: #828670;
   color: black;
 }
+
 .tt-content {
   height: 90%;
 }
+
 .right {
   display: flex;
   flex-direction: row;
   justify-content: right;
 }
+
 .my-button {
   margin: 5px;
 }
+
 .closeButton {
   margin: 5px;
   padding: 0;
@@ -107,6 +114,7 @@ export default {
   top: 0;
   right: 0;
 }
+
 .header {
   padding: 10px;
   display: flex;

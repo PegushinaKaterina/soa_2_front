@@ -19,7 +19,6 @@
       <div class="dotRowElem">
         {{ headerOrganization.officialAddress }}
       </div>
-      <div class="dotRowElem">{{ headerOrganization.employees }}</div>
     </div>
     <div class="dotTableRow">
       <div class="dotRowElem">{{ organization.name }}</div>
@@ -30,7 +29,7 @@
         {{ new Date(organization.creationDate).toLocaleDateString() }}
       </div>
       <div class="dotRowElem">
-        {{ typeMap[organization.type] }}
+        {{ organization.type }}
       </div>
       <div class="dotRowElem">
         {{ organization.annualTurnover }}
@@ -38,8 +37,11 @@
       <div class="dotRowElem">
         {{ organization.officialAddress.zipCode }}
       </div>
-      <div class="dotRowElem">
-        {{ organization.employees }}
+    </div>
+    <div class="dotRowElem column employees">
+      Всего сотрудников в огранизации: {{ organization.employees.length }}
+      <div v-for="employee in organization.employees">
+        {{ employee.name }}
       </div>
     </div>
   </div>
@@ -50,7 +52,7 @@
     <div>
       <fieldset class="my-input">
         <legend>name</legend>
-        <my-input v-model="name" type="text" />
+        <my-input v-model="name" type="text"/>
       </fieldset>
       <my-button class="closeButton" type="button" @click="addEmployee"
         >Добавить сотрудника
@@ -86,47 +88,47 @@ export default {
       name: "",
       headerOrganization: {
         id: "id",
-        name: "name",
-        coordinates: "coordinates",
-        creationDate: "creationDate",
-        type: "type",
-        officialAddress: "officialAddress",
-        annualTurnover: "annualTurnover",
-        employees: "employees",
+        name: "Имя",
+        coordinates: "Координаты",
+        creationDate: "Дата создания",
+        type: "Тип",
+        officialAddress: "Официальный адресс",
+        annualTurnover: "Годовой оборот",
+        employees: "Сотрудники",
       },
     };
   },
-  computed: {
-    typeMap() {
-      return {
-        PUBLIC: "паблик",
-        GOVERNMENT: "государственный",
-        TRUST: "доверительный",
-        PRIVATE_LIMITED_COMPANY: "ООО",
-        OPEN_JOINT_STOCK_COMPANY: "ОАО",
-      };
-    },
+  mounted() {
+    this.getOrganization();
   },
   methods: {
+    getOrganization() {
+      if (this.organizationProp && this.organizationProp.id) {
+        axios
+          .get(
+            "https://localhost:8181/organization-service/organizations/" +
+              this.organization.id
+          )
+          .then((res) => {
+            this.organization = res.data;
+          })
+          .catch((error) => alert(error));
+      }
+    },
     deleteAllEmployees() {
       axios
         .post(
           "https://localhost:8585/orgmanager/fire/all/" + this.organization.id
         )
         .then(() => {
-          axios
-            .get(
-              "https://localhost:8181/organization-service/organizations/" +
-                this.organization.id
-            )
-            .then((res) => {
-              this.organization = res.data;
-            })
-            .catch((error) => console.log(error));
+          this.getOrganization();
         })
-        .catch((error) => console.log(error));
+        .catch((error) => alert(error));
     },
     addEmployee() {
+      if (this.name === "") {
+        alert("Имя сотрудника не может быть пустым");
+      }
       axios
         .post(
           "https://localhost:8585/orgmanager/hire/" + this.organization.id,
@@ -135,17 +137,9 @@ export default {
           }
         )
         .then(() => {
-          axios
-            .get(
-              "https://localhost:8181/organization-service/organizations/" +
-                this.organization.id
-            )
-            .then((res) => {
-              this.organization = res.data;
-            })
-            .catch((error) => console.log(error));
+          this.getOrganization();
         })
-        .catch((error) => console.log(error));
+        .catch((error) => alert(error));
     },
   },
 };
@@ -157,6 +151,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
 }
+
 .dotTableRow {
   box-sizing: border-box;
   display: flex;
@@ -178,12 +173,25 @@ export default {
   padding: 5px;
   overflow-y: scroll;
 }
+
 .dotRowElem {
   display: flex;
   flex-direction: row;
   padding: 2px;
 }
+
 .my-input {
   padding: 5px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.employees {
+  overflow-y: scroll;
+  border: #828670 1px solid;
 }
 </style>

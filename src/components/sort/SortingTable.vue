@@ -2,10 +2,10 @@
   <div class="tt">
     <sorting-table-header />
     <sorting-table-row
-      class="tableRow"
       v-for="sortingStrategy in sortingStrategies"
       :key="sortingStrategy.id"
       :sorting-strategy="sortingStrategy"
+      class="tableRow"
       @deleteSortingStrategy="$emit('deleteSortingStrategy', $event)"
     />
   </div>
@@ -14,11 +14,9 @@
 <script>
 import SortingTableHeader from "@/components/sort/SortingTableHeader.vue";
 import SortingTableRow from "@/components/sort/SortingTableRow.vue";
-import FilterTableRow from "@/components/filter/FilterTableRow.vue";
 
 export default {
   components: {
-    FilterTableRow,
     SortingTableRow,
     SortingTableHeader,
   },
@@ -65,6 +63,7 @@ export default {
   top: 0;
   right: 0;
 }
+
 .header {
   padding: 10px;
   display: flex;

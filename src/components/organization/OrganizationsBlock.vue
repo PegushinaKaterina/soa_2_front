@@ -2,13 +2,15 @@
   <div class="organizations-block">
     <div class="organizations-block-elem main-elem">
       <organization-table
-        :organizations="organizations"
         :headerOrganization="headerOrganization"
+        :organizations="organizations"
         @moreInfo="$emit('moreInfo', $event)"
         @nextPage="nextPage"
         @prevPage="prevPage"
         @updateOrganization="$emit('updateOrganization', $event)"
+        @reload="$emit('reload', $event)"
       ></organization-table>
+      {{ pager.pageNum }} / {{ pager.totalPages }}
     </div>
     <div class="column">
       <div class="row">
@@ -21,15 +23,15 @@
         </div>
         <div class="organizations-block-elem additional-elem">
           <sorting-block
+            :sortingStrategies="sortingStrategies"
             @addSortingStrategy="addSortingStrategy"
             @deleteSortingStrategy="deleteSortingStrategy"
-            :sortingStrategies="sortingStrategies"
           ></sorting-block>
         </div>
       </div>
-      <my-button type="button" @click="getOrganizations" class="my-button"
-        >обновить данные с учетом заполненных параметров</my-button
-      >
+      <my-button class="my-button" type="button" @click="getOrganizations(1)"
+        >обновить данные с учетом заполненных параметров
+      </my-button>
     </div>
   </div>
 </template>
@@ -40,9 +42,11 @@ import FilterBlock from "@/components/filter/FilterBlock.vue";
 import SortingBlock from "@/components/sort/SortingBlock.vue";
 import MyButton from "@/components/UI/MyButton.vue";
 import axios from "axios";
+import OrganizationTableRow from "@/components/organization/OrganizationTableRow.vue";
 
 export default {
   components: {
+    OrganizationTableRow,
     MyButton,
     SortingBlock,
     FilterBlock,
@@ -57,44 +61,77 @@ export default {
   data() {
     return {
       organizations: [],
-      page: 1,
-      size: 4,
+      pager: {
+        pageNum: 1,
+        totalPages: 0,
+      },
+      size: 11,
       filterStrategies: [],
       sortingStrategies: [],
     };
   },
+  computed: {
+    columnMap() {
+      return {
+        ID: "id",
+        NAME: "имя",
+        CREATION_DATE: "дата создания",
+        ANNUAL_TURNOVER: "годовой оборот",
+        TYPE: "тип",
+        OFFICIAL_ADDRESS: "официальный адрес",
+      };
+    },
+  },
   mounted() {
-    this.getOrganizations();
+    this.getOrganizations(this.pager.pageNum);
   },
   methods: {
     addFilterStrategy(filterStrategy) {
-      console.log(filterStrategy);
-      this.filterStrategies.push(filterStrategy);
+      if (
+        this.filterStrategies
+          .map((filter) => filter.filterColumn)
+          .includes(filterStrategy.filterColumn)
+      ) {
+        alert(
+          "Фильтрация по колонке " +
+            this.columnMap[filterStrategy.filterColumn] +
+            " уже есть"
+        );
+      } else {
+        this.filterStrategies.push(filterStrategy);
+      }
     },
     addSortingStrategy(sortingStrategy) {
-      console.log(sortingStrategy);
-      this.sortingStrategies.push(sortingStrategy);
-      console.log(this.sortingStrategies);
+      if (
+        this.sortingStrategies
+          .map((strategy) => strategy.sortingColumn)
+          .includes(sortingStrategy.sortingColumn)
+      ) {
+        alert(
+          "Сортировка по колонке " +
+            this.columnMap[sortingStrategy.sortingColumn] +
+            " уже есть"
+        );
+      } else {
+        this.sortingStrategies.push(sortingStrategy);
+      }
     },
     deleteFilterStrategy(filterStrategy) {
-      console.log(filterStrategy);
       this.filterStrategies = this.filterStrategies.filter(
         (item) => item !== filterStrategy
       );
     },
     deleteSortingStrategy(sortingStrategy) {
-      console.log(sortingStrategy);
       this.sortingStrategies = this.sortingStrategies.filter(
         (item) => item !== sortingStrategy
       );
     },
-    getOrganizations() {
-      console.log("getOrganizations");
+    getOrganizations(page = this.pager.pageNum) {
       axios
         .post(
           "https://localhost:8181/organization-service/organizations/search",
           {
-            page: this.page,
+            page: page,
             size: this.size,
             sortingStrategies: this.sortingStrategies,
             filterStrategies: this.filterStrategies,
@@ -102,19 +139,18 @@ export default {
         )
         .then((res) => {
           this.organizations = res.data.organizations;
+          this.pager = res.data.pager;
         })
-        .catch((error) => console.log(error));
+        .catch((error) => alert(error));
     },
     nextPage() {
-      if (this.organizations.length > 0) {
-        this.page++;
-        this.getOrganizations();
+      if (this.pager.pageNum < this.pager.totalPages) {
+        this.getOrganizations(this.pager.pageNum + 1);
       }
     },
     prevPage() {
-      if (this.page > 1) {
-        this.page--;
-        this.getOrganizations();
+      if (this.pager.pageNum > 1) {
+        this.getOrganizations(this.pager.pageNum - 1);
       }
     },
   },
@@ -129,6 +165,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
 }
+
 .organizations-block-elem {
   margin-left: 5px;
   margin-right: 5px;
@@ -158,6 +195,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 .my-button {
   width: 98%;
   margin: 1%;

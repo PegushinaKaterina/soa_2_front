@@ -11,8 +11,8 @@
         class="closeButton"
         type="button"
         @click="$emit('deleteSortingStrategy', sortingStrategy)"
-      >x</my-button
-      >
+        >x
+      </my-button>
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@
 import MyButton from "@/components/UI/MyButton.vue";
 
 export default {
-  components: {MyButton},
+  components: { MyButton },
   props: {
     sortingStrategy: {
       type: Object,
@@ -31,18 +31,18 @@ export default {
   computed: {
     typeMap() {
       return {
-        asc: "asc",
-        desc: "desc",
+        asc: "по возрастанию",
+        desc: "по убыванию",
       };
     },
     columnMap() {
       return {
-        ID: "ID",
-        NAME: "NAME",
-        CREATION_DATE: "CREATION_DATE",
-        ANNUAL_TURNOVER: "ANNUAL_TURNOVER",
-        TYPE: "TYPE",
-        OFFICIAL_ADDRESS: "OFFICIAL_ADDRESS",
+        ID: "id",
+        NAME: "имя",
+        CREATION_DATE: "дата создания",
+        ANNUAL_TURNOVER: "годовой оборот",
+        TYPE: "тип",
+        OFFICIAL_ADDRESS: "официальный адрес",
       };
     },
   },
@@ -71,6 +71,7 @@ export default {
 .dotRowLongElem {
   width: 30%;
 }
+
 .closeButton {
   margin: 0;
   padding: 0;

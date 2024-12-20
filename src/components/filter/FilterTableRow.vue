@@ -34,22 +34,22 @@ export default {
   computed: {
     typeMap() {
       return {
-        contains: "contains",
-        more: "more",
-        moreOrEquals: "moreOrEquals",
-        less: "less",
-        lessOrEquals: "lessOrEquals",
-        equals: "equals",
+        contains: "содержит",
+        more: "больше",
+        moreOrEquals: "больше или равно",
+        less: "меньше",
+        lessOrEquals: "меньше или равно",
+        equals: "равно",
       };
     },
     columnMap() {
       return {
-        ID: "ID",
-        NAME: "NAME",
-        CREATION_DATE: "CREATION_DATE",
-        ANNUAL_TURNOVER: "ANNUAL_TURNOVER",
-        TYPE: "TYPE",
-        OFFICIAL_ADDRESS: "OFFICIAL_ADDRESS",
+        ID: "id",
+        NAME: "имя",
+        CREATION_DATE: "дата создания",
+        ANNUAL_TURNOVER: "годовой оборот",
+        TYPE: "тип",
+        OFFICIAL_ADDRESS: "официальный адрес",
       };
     },
   },
@@ -73,10 +73,6 @@ export default {
 
 .dotRowNormalElem {
   width: 25%;
-}
-
-.dotRowLongElem {
-  width: 30%;
 }
 
 .closeButton {

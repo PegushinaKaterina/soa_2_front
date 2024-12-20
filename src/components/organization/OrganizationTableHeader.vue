@@ -1,11 +1,13 @@
 <template>
   <div class="dotTableRow">
     <div class="dotRowElem dotRowNormalElem">{{ organization.name }}</div>
-    <div class="dotRowElem dotRowNormalElem">{{ organization.coordinates }}</div>
+    <div class="dotRowElem dotRowNormalElem">
+      {{ organization.coordinates }}
+    </div>
     <div class="dotRowElem dotRowLongElem">
       {{ organization.creationDate }}
     </div>
-    <div class="dotRowElem dotRowShortElem">{{ organization.type }}</div>
+    <div class="dotRowElem dotRowNormalElem">{{ organization.type }}</div>
     <div class="dotRowElem dotRowNormalElem">
       {{ organization.annualTurnover }}
     </div>

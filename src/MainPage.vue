@@ -35,7 +35,7 @@ export default {
 .app {
   height: 700px;
   --text-size: 12px;
-  --text-size-header: 35px;
+  --text-size-header: 30px;
   --padding-size: 10px;
   --button-size: 110px;
   --element-form-text-size: 12px;
@@ -66,6 +66,6 @@ export default {
   height: 20%;
   text-align: center;
   font-size: var(--text-size-header);
-  margin: 20px 0px 20px 0px;
+  margin-bottom: 10px;
 }
 </style>

@@ -11,27 +11,16 @@
           <legend>x</legend>
           <my-input
             v-model="organization.coordinates.x"
+            min="-394"
             type="number"
-            max="5"
-            min="-5"
           />
           <legend>y</legend>
-          <my-input
-            v-model="organization.coordinates.y"
-            type="number"
-            max="5"
-            min="-5"
-          />
+          <my-input v-model="organization.coordinates.y" type="number" />
         </div>
       </fieldset>
       <fieldset>
         <legend>annualTurnover</legend>
-        <my-input
-          v-model="organization.annualTurnover"
-          type="number"
-          max="5"
-          min="-5"
-        />
+        <my-input v-model="organization.annualTurnover" min="1" type="number" />
       </fieldset>
       <fieldset>
         <legend>type</legend>
@@ -80,22 +69,40 @@ export default {
   },
   methods: {
     create() {
-      axios
-        .put(
-          "https://localhost:8181/organization-service/organizations/" +
-            this.organization.id,
-          {
-            name: this.organization.name,
-            coordinates: this.organization.coordinates,
-            type: this.organization.type,
-            annualTurnover: this.organization.annualTurnover,
-            officialAddress: this.organization.officialAddress,
-          }
-        )
-        .then(() => {
-          this.$emit("closeMoreInfo");
-          window.location.reload();
-        });
+      if (this.organization.name === "") {
+        alert("Имя организации не может быть пустым");
+      } else if (this.organization.annualTurnover === "") {
+        alert("annualTurnover не может быть пустым");
+      } else if (this.organization.type === "") {
+        alert("Тип организации не может быть пустым");
+      } else if (this.organization.officialAddress.zipCode === "") {
+        alert("Адресс организации не может быть пустым");
+      } else if (this.organization.officialAddress.zipCode.length >= 18) {
+        alert("Адресс организации должен быть не больше 18 символов");
+      } else if (this.organization.coordinates.x < -394) {
+        alert("Координата х не может быть меньше, чем -394");
+      } else if (this.organization.annualTurnover < 1) {
+        alert("Годовой оборот не может быть меньше 1");
+      } else {
+        axios
+          .put(
+            "https://localhost:8181/organization-service/organizations/" +
+              this.organization.id,
+            {
+              name: this.organization.name,
+              coordinates: this.organization.coordinates,
+              type: this.organization.type,
+              annualTurnover: this.organization.annualTurnover,
+              officialAddress: this.organization.officialAddress,
+            }
+          )
+          .then(() => {
+            alert("Организация обновлена");
+            this.$emit("reload");
+            this.$emit("closeMoreInfo");
+          })
+          .catch((error) => alert(error));
+      }
     },
   },
 };

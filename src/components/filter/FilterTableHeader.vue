@@ -1,8 +1,8 @@
 <template>
   <div class="dotTableRow">
-    <div class="dotRowElem dotRowNormalElem">column</div>
-    <div class="dotRowElem dotRowNormalElem">type</div>
-    <div class="dotRowElem dotRowNormalElem">value</div>
+    <div class="dotRowElem dotRowNormalElem">Колонка</div>
+    <div class="dotRowElem dotRowNormalElem">Тип</div>
+    <div class="dotRowElem dotRowNormalElem">Значение</div>
     <div class="dotRowElem dotRowShortElem"></div>
   </div>
 </template>
@@ -24,10 +24,4 @@
 .dotRowNormalElem {
   width: 25%;
 }
-
-.dotRowLongElem {
-  width: 30%;
-}
 </style>
-<script setup lang="ts">
-</script>

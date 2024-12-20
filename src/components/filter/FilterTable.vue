@@ -2,10 +2,10 @@
   <div class="tt">
     <filter-table-header />
     <filter-table-row
-      class="tableRow"
       v-for="filterStrategy in filterStrategies"
       :key="filterStrategy.id"
       :filterStrategy="filterStrategy"
+      class="tableRow"
       @deleteFilterStrategy="$emit('deleteFilterStrategy', $event)"
     />
   </div>
@@ -14,11 +14,9 @@
 <script>
 import FilterTableRow from "@/components/filter/FilterTableRow.vue";
 import FilterTableHeader from "@/components/filter/FilterTableHeader.vue";
-import MyButton from "@/components/UI/MyButton.vue";
 
 export default {
   components: {
-    MyButton,
     FilterTableHeader,
     FilterTableRow,
   },
@@ -65,6 +63,7 @@ export default {
   top: 0;
   right: 0;
 }
+
 .header {
   padding: 10px;
   display: flex;

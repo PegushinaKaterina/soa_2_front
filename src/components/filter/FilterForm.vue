@@ -1,25 +1,26 @@
 <template>
   <form @submit.prevent>
+    Фильтрация
     <div class="inputs">
       <div class="input">
-        <pre>column: </pre>
+        <pre>Колонка:  </pre>
         <my-select
           v-model="filterStrategy.filterColumn"
           :options="columnOptions"
         />
       </div>
       <div class="input">
-        <pre>type:   </pre>
+        <pre>Тип:      </pre>
         <my-select v-model="filterStrategy.filterType" :options="typeOptions" />
       </div>
       <div class="input">
-        <pre>value:  </pre>
+        <pre>Значение: </pre>
         <my-input v-model="filterStrategy.filterValue" type="text" />
       </div>
       <div class="commandButton">
-        <my-button type="button" @click="addFilterStrategy" class="my-button"
-          >добавить</my-button
-        >
+        <my-button class="my-button" type="button" @click="addFilterStrategy"
+          >добавить
+        </my-button>
       </div>
     </div>
   </form>
@@ -36,35 +37,39 @@ export default {
     return {
       filterStrategy: {
         id: 0,
-        filterColumn: "ID",
+        filterColumn: "NAME",
         filterType: "contains",
         filterValue: "",
       },
       columnOptions: [
-        { value: "ID", name: "ID" },
-        { value: "NAME", name: "NAME" },
-        { value: "CREATION_DATE", name: "CREATION_DATE" },
-        { value: "ANNUAL_TURNOVER", name: "ANNUAL_TURNOVER" },
-        { value: "TYPE", name: "TYPE" },
-        { value: "OFFICIAL_ADDRESS", name: "OFFICIAL_ADDRESS" },
+        { value: "ID", name: "id" },
+        { value: "NAME", name: "Имя" },
+        { value: "CREATION_DATE", name: "Дата создания" },
+        { value: "ANNUAL_TURNOVER", name: "Годовой оборот" },
+        { value: "TYPE", name: "Тип" },
+        { value: "OFFICIAL_ADDRESS", name: "Официальный адресс" },
       ],
       typeOptions: [
-        { value: "contains", name: "contains" },
-        { value: "more", name: "more" },
-        { value: "moreOrEquals", name: "moreOrEquals" },
-        { value: "less", name: "less" },
-        { value: "lessOrEquals", name: "lessOrEquals" },
-        { value: "equals", name: "equals" },
+        { value: "contains", name: "Содержит" },
+        { value: "more", name: "Больше" },
+        { value: "moreOrEquals", name: "Больше или равно" },
+        { value: "less", name: "Меньше" },
+        { value: "lessOrEquals", name: "Меньше или равно" },
+        { value: "equals", name: "Равно" },
       ],
     };
   },
   methods: {
     addFilterStrategy() {
-      this.$emit(
-        "addFilterStrategy",
-        JSON.parse(JSON.stringify(this.filterStrategy))
-      );
-      this.filterStrategy.id++;
+      if (this.filterStrategy.filterValue === "") {
+        alert("Значение для фильтрации не может быть пустым");
+      } else {
+        this.$emit(
+          "addFilterStrategy",
+          JSON.parse(JSON.stringify(this.filterStrategy))
+        );
+        this.filterStrategy.id++;
+      }
     },
   },
 };
@@ -78,6 +83,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 }
+
 .input {
   display: flex;
   flex-direction: row;

@@ -1,27 +1,25 @@
 <template>
   <form @submit.prevent>
+    Сортировка
     <div class="inputs">
       <div class="input">
-        <pre>column: </pre>
+        <pre>Колонка: </pre>
         <my-select
           v-model="sortingStrategy.sortingColumn"
           :options="columnOptions"
         />
       </div>
       <div class="input">
-        <pre>type:   </pre>
+        <pre>Тип:     </pre>
         <my-select
           v-model="sortingStrategy.sortingType"
           :options="typeOptions"
         />
       </div>
       <div class="commandButton">
-        <my-button
-          type="button"
-          @click="addSortingStrategy"
-          class="my-button"
-          >добавить</my-button
-        >
+        <my-button class="my-button" type="button" @click="addSortingStrategy"
+          >Добавить
+        </my-button>
       </div>
     </div>
   </form>
@@ -38,19 +36,19 @@ export default {
       sortingStrategy: {
         id: 0,
         sortingType: "asc",
-        sortingColumn: "ID",
+        sortingColumn: "NAME",
       },
       columnOptions: [
-        { value: "ID", name: "ID" },
-        { value: "NAME", name: "NAME" },
-        { value: "CREATION_DATE", name: "CREATION_DATE" },
-        { value: "ANNUAL_TURNOVER", name: "ANNUAL_TURNOVER" },
-        { value: "TYPE", name: "TYPE" },
-        { value: "OFFICIAL_ADDRESS", name: "OFFICIAL_ADDRESS" },
+        { value: "ID", name: "id" },
+        { value: "NAME", name: "Имя" },
+        { value: "CREATION_DATE", name: "Дата создания" },
+        { value: "ANNUAL_TURNOVER", name: "Годовой оборот" },
+        { value: "TYPE", name: "Тип" },
+        { value: "OFFICIAL_ADDRESS", name: "Официальный адресс" },
       ],
       typeOptions: [
-        { value: "asc", name: "asc" },
-        { value: "desc", name: "desc" },
+        { value: "asc", name: "По возрастанию" },
+        { value: "desc", name: "По убыванию" },
       ],
     };
   },
@@ -60,7 +58,6 @@ export default {
         "addSortingStrategy",
         JSON.parse(JSON.stringify(this.sortingStrategy))
       );
-      this.sortingStrategy.id++;
     },
   },
 };
@@ -74,6 +71,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 }
+
 .input {
   display: flex;
   flex-direction: row;

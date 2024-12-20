@@ -16,13 +16,13 @@
       class="dotRowElem dotRowLongElem"
       @click="$emit('moreInfo', organization)"
     >
-      {{ new Date(organization.creationDate).toLocaleDateString() }}
+      {{ new Date(organization.creationDate * 1000).toLocaleDateString() }}
     </div>
     <div
-      class="dotRowElem dotRowShortElem"
+      class="dotRowElem dotRowNormalElem"
       @click="$emit('moreInfo', organization)"
     >
-      {{ typeMap[organization.type] }}
+      {{ organization.type }}
     </div>
     <div
       class="dotRowElem dotRowNormalElem"
@@ -65,21 +65,9 @@ export default {
       required: true,
     },
   },
-  computed: {
-    typeMap() {
-      return {
-        PUBLIC: "паблик",
-        GOVERNMENT: "государственный",
-        TRUST: "доверительный",
-        PRIVATE_LIMITED_COMPANY: "ООО",
-        OPEN_JOINT_STOCK_COMPANY: "ОАО",
-      };
-    },
-  },
   methods: {
     moreInfo() {
       this.$emit("moreInfo", this.organization);
-      console.log(1);
     },
     deleteOrganization() {
       axios
@@ -87,8 +75,8 @@ export default {
           "https://localhost:8181/organization-service/organizations/" +
             this.organization.id
         )
-        .then(() => window.location.reload())
-        .catch((error) => console.log(error));
+        .then(() => this.$emit("reload"))
+        .catch((error) => alert(error));
     },
   },
 };
@@ -128,6 +116,7 @@ export default {
 .dotTableRow:has(.dotRowElem:hover) {
   background-color: wheat;
 }
+
 .dotTableRow:has(.dotRowElem:hover) :deep(.dotRowElem) {
   background-color: wheat;
 }

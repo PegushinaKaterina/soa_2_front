@@ -15,11 +15,9 @@
 <script>
 import SortingTable from "@/components/sort/SortingTable.vue";
 import SortingForm from "@/components/sort/SortingForm.vue";
-import SortingTableRow from "@/components/sort/SortingTableRow.vue";
 
 export default {
   components: {
-    SortingTableRow,
     SortingForm,
     SortingTable,
   },
@@ -52,6 +50,6 @@ export default {
 .elem {
   width: 100%;
   border: black solid 1.5px;
-  padding: 10px;
+  padding: 15px;
 }
 </style>

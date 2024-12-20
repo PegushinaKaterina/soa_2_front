@@ -1,8 +1,8 @@
 <template>
   <div class="block">
     <filter-form
-      @addFilterStrategy="$emit('addFilterStrategy', $event)"
       class="elem form"
+      @addFilterStrategy="$emit('addFilterStrategy', $event)"
     ></filter-form>
     <filter-table
       :filter-strategies="filterStrategies"
@@ -15,11 +15,9 @@
 <script>
 import FilterTable from "@/components/filter/FilterTable.vue";
 import FilterForm from "@/components/filter/FilterForm.vue";
-import FilterTableRow from "@/components/filter/FilterTableRow.vue";
 
 export default {
   components: {
-    FilterTableRow,
     FilterForm,
     FilterTable,
   },
@@ -52,6 +50,6 @@ export default {
 .elem {
   width: 100%;
   border: black solid 1.5px;
-  padding: 10px;
+  padding: 15px;
 }
 </style>

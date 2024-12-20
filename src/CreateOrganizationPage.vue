@@ -17,12 +17,6 @@ export default {
     OrganizationForm,
   },
   name: "App",
-  data() {
-    return {
-      username: "",
-      password: "",
-    };
-  },
 };
 </script>
 

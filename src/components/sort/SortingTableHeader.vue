@@ -1,7 +1,7 @@
 <template>
   <div class="dotTableRow">
-    <div class="dotRowElem dotRowNormalElem"> column </div>
-    <div class="dotRowElem dotRowNormalElem"> type </div>
+    <div class="dotRowElem dotRowNormalElem"> Колонка</div>
+    <div class="dotRowElem dotRowNormalElem"> Тип</div>
     <div class="dotRowElem dotRowShortElem"></div>
   </div>
 </template>
